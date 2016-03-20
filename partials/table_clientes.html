@@ -1,0 +1,91 @@
+<div class="container">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">Lista de Clientes</h3>
+		</div>
+		<div class="panel-body">
+			<table class="table table-hover table-striped table-condensed" style="overflow-y: auto; height: 500px; display: block;" role="table">
+				<thead>
+					<tr>
+						<th class="col-md-2"></th>
+						<th class="col-md-2"><a href="" ng-click="model.ordena('nome_crianca')">Nome da Criança</a></th>
+						<th class="col-md-1"><a href="" ng-click="model.ordena('dn_crianca')">Data de Nascimento</a></th>
+						<th class="col-md-1"><a href="" ng-click="model.ordena('nome_responsavel')">Nome do Responsável</a></th>
+						<th class="col-md-1"><a href="" ng-click="model.ordena('email')">Email</a></th>
+						<th class="col-md-1"><a href="" ng-click="model.ordena('telefone')">Telefone</a></th>
+						<th class="col-md-1"><a href="" ng-click="model.ordena('tel_operadora')">Operadora</a></th>
+						<th class="col-md-1">Observações</th>
+						<th class="col-md-1"></th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr ng-repeat="cadastro in model.cadastros | filter:model.filtro | orderBy:model.ordem">
+						<td>
+							<div class="btn-group" role="group">
+								<button class="btn btn-primary" ng-disabled="cadastro.standing_by || cadastro.brincando" ng-hide="model.checked == $index"
+								ng-click="model.change($index)">Atualizar</button>
+								<button class="btn btn-success" ng-show="model.checked == $index" ng-click="atualizaCadastro(cadastro); model.change($index)">Salvar</button>
+								<button class="btn btn-success" ng-disabled="model.checked == $index || cadastro.standing_by || cadastro.brincando" ng-click="standBy(cadastro)">Brincar</button>
+								<button class="btn btn-info" ng-disabled="model.checked == $index" ng-click="modals.open_modal_historico(cadastro)">Histórico</button>
+							</div>
+						</td>
+
+						<td>
+							<div ng-bind="cadastro.nome_crianca" ng-hide="model.checked == $index"></div>
+							<input type="text" ng-model="cadastro.nome_crianca" ng-show="model.checked == $index">
+						</td>
+						<td>
+							<div ng-hide="model.checked == $index">{{cadastro.dn_crianca | date:'dd/MM/yyyy'}}</div>
+							<div class="btn-group" ng-show="model.checked == $index">
+								<select class="btn btn-primary" ng-change="model.setDia($index, model.calendario.dia)" ng-model="model.calendario.dia" ng-options="dia for dia in model.dias"
+								ng-required="true">
+									<option value="" disabled selected>Dia</option>
+								</select>
+								<select class="btn btn-primary" ng-change="model.setMes($index, model.calendario.mes)" ng-model="model.calendario.mes" ng-options="mes for mes in model.meses"
+								ng-required="true">
+									<option value="" disabled selected>Mês</option>
+								</select>
+								<select class="btn btn-primary" ng-change="model.setAno($index, model.calendario.ano)" ng-model="model.calendario.ano" ng-options="ano for ano in model.anos"
+								ng-required="true">
+									<option value="" disabled selected>Ano</option>
+								</select>
+							</div>
+						</td>
+						<td>
+							<div ng-bind="cadastro.nome_responsavel" ng-hide="model.checked == $index"></div>
+							<input type="text" ng-model="cadastro.nome_responsavel" ng-show="model.checked == $index">
+						</td>
+						<td>
+							<div ng-bind="cadastro.email" ng-hide="model.checked == $index"></div>
+							<input type="text" ng-model="cadastro.email" ng-show="model.checked == $index">
+						</td>
+						<td>
+							<div ng-bind="cadastro.telefone" ng-hide="model.checked == $index"></div>
+							<input type="text" ng-model="cadastro.telefone" ng-show="model.checked == $index">
+						</td>
+						<td>
+							<div ng-bind="cadastro.tel_operadora" ng-hide="model.checked == $index"></div>
+							<select class="btn btn-primary dropdown-toggle" ng-model="cadastro.tel_operadora" ng-options="operadora for operadora in model.operadoras"
+							ng-required="true" ng-show="model.checked == $index">
+								<option value="" disabled selected>{{cadastro.tel_operadora}}</option>
+							</select>
+						</td>
+						<td>
+							<div ng-bind="cadastro.observacoes" ng-hide="model.checked == $index"></div>
+							<textarea cols="30" rows="3" ng-model="cadastro.observacoes" ng-show="model.checked == $index"></textarea>
+						</td>
+						<td>
+							<button class="btn btn-danger" ng-disabled="cadastro.standing_by || cadastro.brincando" confirmed-click="excluiCadastro(cadastro._id)"
+							ng-confirm-click="Confirma exclusão do cadastro?">Excluir</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
+		<div class="panel-footer">
+			<p>&copy; Diversão MaisKidMais 2016</p>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,57 @@
+<div class="container">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">Preços</h3>
+		</div>
+		<div class="panel-body">
+			<table class="table">
+				<tr>
+					<th>Valor da Hora</th>
+					<th>Par de Meias</th>
+				</tr>
+				<tr>
+					<td>{{model.config[0].valor_hora | currency:"R$ " }}</td>
+					<td>{{model.config[0].valor_par_meias | currency:"R$ "}}</td>
+				</tr>
+			</table>
+
+			<div class="row form-group">
+				<div class="col-sm-6">
+					<label for="">Valor da Hora</label>
+					<div class="input-group">
+						<span class="input-group-addon"><i class="glyphicon glyphicon-usd"></i></span>
+						<input type="text" class="form-control" ng-model="config.valor_hora" ng-show="!model.configurado()" placeholder="Nova" />
+						<input type="text" class="form-control" ng-model="model.config[0].valor_hora" ng-show="model.configurado()" placeholder="Valor da Hora"
+						/>
+					</div>
+				</div>
+				<!--</div>
+			<div class="row form-group">-->
+				<div class="col-sm-6">
+					<label for="">Valor do Par de Meias</label>
+					<div class="input-group">
+						<span class="input-group-addon"><i class="glyphicon glyphicon-usd"></i></span>
+						<input type="text" class="form-control" ng-model="config.valor_par_meias" ng-show="!model.configurado()" placeholder="Nova"
+						/>
+						<input type="text" class="form-control" ng-model="model.config[0].valor_par_meias" ng-show="model.configurado()" placeholder="Valor do par de meias"
+						/>
+					</div>
+				</div>
+			</div>
+			<div class="row form-group">
+				<div class="col-sm-4">
+					<!--ng-disabled="form_principal.$invalid || form_principal.$pristine"-->
+					<button class="btn btn-lg btn-success" ng-click="configura(config); modals.success_config()" ng-show="!model.configurado()"
+					ng-disabled="form_principal.$invalid || form_principal.$pristine">Configura Valor</button>
+					<button class="btn btn-lg btn-success" ng-click="atualiza(model.config[0]); modals.success_config()" ng-show="model.configurado()"
+					ng-disabled="form_principal.$invalid || form_principal.$pristine">Atualiza Valor</button>
+				</div>
+			</div>
+
+		</div>
+		<div class="panel-footer">
+			<p>&copy; Diversão MaisKidMais 2016</p>
+		</div>
+	</div>
+
+</div>

@@ -1,0 +1,56 @@
+<div class="container">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">Despesas</h3>
+		</div>
+		<div class="panel-body">
+			<form class="form-horizontal" role="form" name="form_principal" novalidate>				
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="">Data</label>
+					<div class="col-sm-10">
+						<div class="input-group">
+							<select class="btn btn-primary dropdown-toggle" ng-model="model.calendario.dia" ng-options="dia for dia in model.dias" ng-required="true">
+								<option value="" disabled selected>Dia</option>
+							</select>
+							<select class="btn btn-primary dropdown-toggle" ng-model="model.calendario.mes" ng-options="mes for mes in model.meses" ng-required="true">
+								<option value="" disabled selected>Mês</option>
+							</select>
+							<select class="btn btn-primary dropdown-toggle" ng-model="model.calendario.ano" ng-options="ano for ano in model.anos" ng-required="true">
+								<option value="" disabled selected>Ano</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="">Valor</label>
+					<div class="col-sm-3">
+						<div class="input-group">
+							<span class="input-group-addon"><i class="glyphicon glyphicon-usd"></i></span>
+							<input type="text" class="form-control" ng-model="despesa.valor" />
+						</div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="">Descrição</label>
+					<div class="col-sm-10">
+						<textarea ng-model="despesa.descricao" class="form-control" rows="5" placeholder="Descrição de despesa"></textarea>
+					</div>
+				</div>
+				
+				<div class="form-group">					
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-lg btn-success" ng-click="add_despesa()" ng-disabled="form_principal.$invalid || form_principal.$pristine">Cadastrar Despesa</button>
+					</div>
+				</div>
+				
+			</form>
+
+		</div>
+		<div class="panel-footer">
+			<p>&copy; Diversão MaisKidMais 2016</p>
+		</div>
+	</div>
+
+</div>

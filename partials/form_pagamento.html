@@ -1,0 +1,86 @@
+<div class="container">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h4 class="panel-title">Pagamento</h4>			
+		</div>
+		<div class="panel-body">
+			
+			<table class="table">
+				<tr>
+					<th>Valor da Hora</th>
+					<th>Par de Meias</th>
+					<th>Nome da Criança</th>
+				</tr>
+				<tr>
+					<td ng-bind="model.config[0].valor_hora | currency:'R$ '"></td>
+					<td ng-bind="model.config[0].valor_par_meias | currency:'R$ '"></td>
+					<td ng-bind="ngDialogData.nome_crianca"></td>
+				</tr>
+			</table>
+			<hr>			
+			<form class="form-horizontal" role="form" name="form_pgto" novalidate>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="">Valor Pago</label>
+					<div class="col-sm-2">
+						<div class="input-group">
+							<span class="input-group-addon"><i class="glyphicon glyphicon-usd"></i></span>
+							<input type="text" class="form-control" ng-model="ngDialogData.historico[ngDialogData.historico.length - 1].valor_pago" ng-change="calculaValor(ngDialogData)"
+							/>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="">Desconto</label>
+					<div class="col-sm-2">
+						<div class="input-group">
+							<span class="input-group-addon"><i class="glyphicon glyphicon-usd"></i></span>
+							<input type="text" class="form-control" ng-model="ngDialogData.historico[ngDialogData.historico.length - 1].desconto" ng-change="calculaValor(ngDialogData)"
+							/>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="">Troco</label>
+					<div class="col-sm-10">
+						<h3 ng-bind="ngDialogData.historico[ngDialogData.historico.length - 1].troco | currency:'R$ '"></h3>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="">Valor Total</label>
+					<div class="col-sm-10">
+						<h1 ng-bind="ngDialogData.historico[ngDialogData.historico.length - 1].valor_final | currency:'R$ '"></h1>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<label>
+							<input type="checkbox" data-ng-model="ngDialogData.historico[ngDialogData.historico.length - 1].com_meia" ng-change="calculaValor(ngDialogData)">Comprou par de meias?
+						</label>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="">Forma de Pagamento</label>
+					<div class="col-sm-10">
+						<select class="btn btn-primary dropdown-toggle" ng-model="ngDialogData.historico[ngDialogData.historico.length - 1].forma_pagamento"
+						ng-options="forma for forma in model.forma_pagamento" ng-required="true">
+							<option value="" disabled selected>Forma de pagamento</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button class="btn btn-lg btn-success" ng-click="efetuaPagamento(ngDialogData)" ng-disabled="form_pgto.$invalid || form_pgto.$pristine">Efetua Pagamento</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="panel-footer">
+			<p>&copy; Diversão MaisKidMais 2016</p>
+		</div>
+	</div>
+</div>

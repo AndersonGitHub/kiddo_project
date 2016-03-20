@@ -1,0 +1,77 @@
+<div class="container">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">Playground</h3>
+		</div>
+		<div class="panel-body">
+
+			<table class="table table-hover table-striped table-condensed">
+				<thead>
+					<tr>
+						<th class="col-md-2">Criança</th>
+						<th class="col-md-2">Início</th>
+						<th class="col-md-3">Tempo</th>
+						<th class="col-md-2">Fim</th>
+						<th class="col-md-3">Ações</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="player in model.players">
+						<td ng-bind="player.nome_crianca"></td>
+						<td>
+							<div ng-show="player.brincando" ng-bind="player.historico[player.historico.length - 1].inicio | date:'HH:mm:ss'"></div>
+							<div class="btn-group" ng-hide="player.brincando">
+								<select class="btn btn-primary dropdown-toggle" ng-model="model.inicio.hora" ng-options="hora for hora in model.horas" ng-required="true">
+									<!--<option value="" disabled selected>Hora</option>-->
+								</select>
+								<select class="btn btn-primary dropdown-toggle" ng-model="model.inicio.minuto" ng-options="minuto for minuto in model.minutos"
+								ng-required="true">
+									<!--<option value="" disabled selected>Minuto</option>-->
+								</select>
+							</div>
+						</td>
+						<td>
+							<div ng-include="'templates/progress_bar.html'"></div>
+						</td>
+						<td>
+							<div ng-show="player.brincando" ng-bind="player.historico[player.historico.length - 1].fim | date:'HH:mm:ss'"></div>
+							<div class="btn-group" ng-hide="player.brincando">
+								<select class="btn btn-primary dropdown-toggle" ng-model="model.fim.hora" ng-options="hora for hora in model.horas" ng-required="true">
+									<!--<option value="" disabled selected>Hora</option>-->
+								</select>
+								<select class="btn btn-primary dropdown-toggle" ng-model="model.fim.minuto" ng-options="minuto for minuto in model.minutos"
+								ng-required="true">
+									<!--<option value="" disabled selected>Minuto</option>-->
+								</select>
+							</div>
+						</td>
+						<td>
+							<button class="btn btn-primary" ng-show="player.standing_by == true && player.brincando == false" ng-click="iniciaBrincadeira(player)">Iniciar</button>
+
+							<button class="btn btn-success" ng-show="player.brincando == true && player.historico[player.historico.length - 1].pago == false"
+							ng-click="abreTelaPagamento(player)">Pagar</button>
+
+
+
+
+							<!--<button class="btn btn-success" ng-show="player.brincando == true" ng-click="adicionaTempo(player)">Tempo++</button>-->
+
+							<button class="btn btn-success" ng-show="player.brincando == true" confirmed-click="adicionaTempo(player)" ng-confirm-click="Adicionar mais 15 minutos?">Tempo++</button>
+
+							<button class="btn btn-info" ng-show="player.brincando == true && player.historico[player.historico.length - 1].pago == true"
+							ng-click="abreTelaPagamento(player)">Pagar++</button>
+
+							<button class="btn btn-danger" ng-show="player.brincando == true && player.historico[player.historico.length - 1].pago == true"
+							ng-click="finalizaBrincadeira(player)">Gravar</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
+		<div class="panel-footer">
+			<p>&copy; Diversão MaisKidMais 2016</p>
+		</div>
+	</div>
+
+</div>

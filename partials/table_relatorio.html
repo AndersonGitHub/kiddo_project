@@ -1,0 +1,117 @@
+<div class="container">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">Relatório</h3>
+		</div>
+		<div class="panel-body">
+			<table class="table table-hover table-striped table-condensed" style="overflow-y: auto; height: 300px; display: block;">
+				<thead>
+					<tr>
+						<th class="col-md-3" colspan="3">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+								<input type="text" class="form-control" ng-model="model.filtro_receita" ng-model-options="{updateOn:'default blur', debounce:{'default':1000, 'blur':0}}"
+								placeholder="Busca" />
+							</div>
+						</th>
+					</tr>
+					<tr>
+						<th class="col-md-3">Valor</th>
+						<th class="col-md-3">Forma de Pagamento</th>
+						<th class="col-md-3">Data</th>
+						<!--<th class="col-sm-2"><a href="" ng-click="model.ordena('nome_crianca')">Nome da Criança</a></th>
+							<th><a href="" ng-click="model.ordena('dn_crianca')">Data de Nascimento</a></th>
+							<th class="col-sm-2"><a href="" ng-click="model.ordena('nome_responsavel')">Nome do Responsável</a></th>
+							<th><a href="" ng-click="model.ordena('email')">Email</a></th>
+							<th><a href="" ng-click="model.ordena('telefone')">Telefone</a></th>
+							<th><a href="" ng-click="model.ordena('tel_operadora')">Operadora</a></th>
+							<th>Observações</th>-->
+						<th class="col-md-3">Opções</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr ng-repeat="receita in model.receitas | filter:model.filtro_receita | orderBy:model.ordem">
+						<!--<td>
+								<button class="btn btn-primary" ng-hide="model.checked == $index" ng-click="model.change($index)">Atualizar</button>
+								<button class="btn btn-success" ng-show="model.checked == $index" ng-click="atualiza_despesa(despesa); model.change($index)">Salvar</button>
+							</td>							-->
+						<td>
+							<div ng-bind="receita.valor | currency:'R$ '" ng-hide="model.checked == $index"></div>
+							<!--<input type="text" ng-model="despesa.valor" ng-show="model.checked == $index">-->
+						</td>
+						<td>
+							<div ng-bind="receita.forma_pagamento" ng-hide="model.checked == $index"></div>
+							<!--<input type="text" ng-model="despesa.descricao" ng-show="model.checked == $index">-->
+						</td>
+						<td>
+							<div ng-bind="receita.data | date:'dd/MM/yyyy'" ng-hide="model.checked == $index"></div>
+							<!--<input type="text" ng-model="despesa.data" ng-show="model.checked == $index">-->
+						</td>
+						<td>
+							<button class="btn btn-danger" confirmed-click="excluiReceita(receita._id)" ng-confirm-click="Confirma exclusão deste registro?">Excluir</button>
+						</td>
+					</tr>
+
+
+				</tbody>
+			</table>
+
+			<table class="table table-hover table-striped table-condensed" style="overflow-y: auto; height: 300px; display: block;">
+				<thead>
+					<tr>
+						<th class="col-md-3" colspan="3">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+								<input type="text" class="form-control" ng-model="model.filtro_despesa" ng-model-options="{updateOn:'default blur', debounce:{'default':1000, 'blur':0}}"
+								placeholder="Busca" />
+							</div>
+						</th>
+					</tr>
+					<tr>
+						<th class="col-md-3">Valor</th>
+						<th class="col-md-3">Descrição</th>
+						<th class="col-md-3">Data</th>
+						<!--<th class="col-sm-2"><a href="" ng-click="model.ordena('nome_crianca')">Nome da Criança</a></th>
+							<th><a href="" ng-click="model.ordena('dn_crianca')">Data de Nascimento</a></th>
+							<th class="col-sm-2"><a href="" ng-click="model.ordena('nome_responsavel')">Nome do Responsável</a></th>
+							<th><a href="" ng-click="model.ordena('email')">Email</a></th>
+							<th><a href="" ng-click="model.ordena('telefone')">Telefone</a></th>
+							<th><a href="" ng-click="model.ordena('tel_operadora')">Operadora</a></th>
+							<th>Observações</th>-->
+						<th class="col-md-3">Opções</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr ng-repeat="despesa in model.despesas | filter:model.filtro_despesa | orderBy:model.ordem">
+						<!--<td>
+								<button class="btn btn-primary" ng-hide="model.checked == $index" ng-click="model.change($index)">Atualizar</button>
+								<button class="btn btn-success" ng-show="model.checked == $index" ng-click="atualiza_despesa(despesa); model.change($index)">Salvar</button>
+							</td>							-->
+						<td>
+							<div ng-bind="despesa.valor | currency:'R$ '" ng-hide="model.checked == $index"></div>
+							<!--<input type="text" ng-model="despesa.valor" ng-show="model.checked == $index">-->
+						</td>
+						<td>
+							<div ng-bind="despesa.descricao" ng-hide="model.checked == $index"></div>
+							<!--<input type="text" ng-model="despesa.descricao" ng-show="model.checked == $index">-->
+						</td>
+						<td>
+							<div ng-bind="despesa.data | date:'dd/MM/yyyy'" ng-hide="model.checked == $index"></div>
+							<!--<input type="text" ng-model="despesa.data" ng-show="model.checked == $index">-->
+						</td>
+						<td>
+							<button class="btn btn-danger" confirmed-click="excluiDespesa(despesa._id)" ng-confirm-click="Confirma exclusão deste registro?">Excluir</button>
+						</td>
+					</tr>
+
+
+				</tbody>
+			</table>
+		</div>
+		<div class="panel-footer">
+			<p>&copy; Diversão MaisKidMais 2016</p>
+		</div>
+	</div>
+</div>
