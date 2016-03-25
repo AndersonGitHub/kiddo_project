@@ -50,8 +50,8 @@ exports.updateCadastro = function (cadastro_update, callback) {
     if (Boolean(cadastro_update.telefone)) { cadastro.telefone = cadastro_update.telefone; }
     if (Boolean(cadastro_update.tel_operadora)) { cadastro.tel_operadora = cadastro_update.tel_operadora; }
     if (Boolean(cadastro_update.observacoes)) { cadastro.observacoes = cadastro_update.observacoes; }
-    if (Boolean(cadastro_update.brincando)) { cadastro.brincando = cadastro_update.brincando; }
-    if (Boolean(cadastro_update.standing_by)) { cadastro.standing_by = cadastro_update.standing_by; }
+    cadastro.brincando = cadastro_update.brincando; 
+    cadastro.standing_by = cadastro_update.standing_by;
     if (Boolean(cadastro_update.historico)) { cadastro.historico = cadastro_update.historico; }
 
     cadastro.save(function (error, cadastro) {

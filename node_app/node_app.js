@@ -171,7 +171,7 @@ app.get('/receita/:id', function (req, res) {
 
 app.post('/receita/', function (req, res) {
   var receitaParameters = {    
-    valor : validator.trim(validator.escape(req.body.valor)),
+    valor : req.body.valor,
     forma_pagamento : validator.trim(validator.escape(req.body.forma_pagamento)),
     data : validator.trim(validator.escape(req.body.data))    
   };
@@ -247,8 +247,8 @@ app.put('/cadastro/', function(req, res) {
     telefone: validator.trim(validator.escape(req.body.telefone)),
     tel_operadora: validator.trim(validator.escape(req.body.tel_operadora)),
     observacoes: validator.trim(validator.escape(req.body.observacoes)),    
-    brincando: validator.trim(validator.escape(req.body.brincando)),
-    standing_by : validator.trim(validator.escape(req.body.standing_by)),
+    brincando: req.body.brincando,
+    standing_by : req.body.standing_by,
     historico: req.body.historico    
   };  
 	
@@ -339,8 +339,8 @@ app.post('/history/', function (req, res) {
     valor_total: validator.trim(validator.escape(req.body.valor_total)),    
     desconto: validator.trim(validator.escape(req.body.desconto)),
     valor_pago: validator.trim(validator.escape(req.body.valor_pago)),  
-    finalizado : validator.trim(validator.escape(req.body.finalizado)),
-    calculado : validator.trim(validator.escape(req.body.calculado))
+    finalizado : req.body.finalizado,
+    calculado : req.body.calculado
   };
   historicoController.save(histParameters, function(err, resp) {
     if(err) res.send(err);
@@ -356,8 +356,8 @@ app.put('/history/', function(req, res) {
   var valor_total = validator.trim(validator.escape(req.param('valor_total')));  
   var desconto = validator.trim(validator.escape(req.param('desconto')));
   var valor_pago = validator.trim(validator.escape(req.param('valor_pago')));
-  var finalizado = validator.trim(validator.escape(req.param('finalizado')));
-  var calculado = validator.trim(validator.escape(req.param('calculado')));  
+  var finalizado = req.param('finalizado');
+  var calculado = req.param('calculado');  
   
   historicoController.update(id, data, inicio, fim, valor_total, desconto, valor_pago, finalizado, calculado, function(resp) {
 		res.json(resp);

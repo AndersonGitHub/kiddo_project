@@ -31,7 +31,7 @@
 							</div>
 						</td>
 						<td>
-							<div ng-include="'templates/progress_bar.html'"></div>
+							<div ng-include="'partials/progress_bar.html'"></div>
 						</td>
 						<td>
 							<div ng-show="player.brincando" ng-bind="player.historico[player.historico.length - 1].fim | date:'HH:mm:ss'"></div>
@@ -46,23 +46,40 @@
 							</div>
 						</td>
 						<td>
-							<button class="btn btn-primary" ng-show="player.standing_by == true && player.brincando == false" ng-click="iniciaBrincadeira(player)">Iniciar</button>
+							<button class="btn btn-primary" ng-click="iniciaBrincadeira(player)" 
+							ng-show="player.standing_by == true && player.brincando == false">
+								<i class="fa fa-play"></i>
+							</button>
+							
+							<button class="btn btn-primary" ng-click="goHome(player)" 
+							ng-show="player.standing_by == true && player.brincando == false">
+								<i class="fa fa-sign-out"></i>
+							</button>
 
-							<button class="btn btn-success" ng-show="player.brincando == true && player.historico[player.historico.length - 1].pago == false"
-							ng-click="abreTelaPagamento(player)">Pagar</button>
+							<button type="button" class="btn btn-primary" ng-click="isCollapsed = !isCollapsed" 
+							ng-show="player.brincando == true && player.historico[player.historico.length - 1].pago == false">
+								<i class="fa fa-usd"></i>
+							</button>
 
+							<button class="btn btn-success" ng-show="player.brincando == true" ng-click="adicionaTempo(player); calculaValor(player)">
+								<i class="fa fa-hourglass"></i><i class="fa fa-plus"></i>
+							</button>
 
+							<button type="button" class="btn btn-primary" ng-click="isCollapsed = !isCollapsed" 
+							ng-show="player.brincando == true && player.historico[player.historico.length - 1].pago == true">
+								<i class="fa fa-usd"></i><i class="fa fa-plus"></i>
+							</button>
 
+							<button class="btn btn-danger" ng-click="finalizaBrincadeira(player)" 
+							ng-show="player.brincando == true && player.historico[player.historico.length - 1].pago == true">
+								<i class="fa fa-floppy-o"></i><i class="fa fa-check"></i>
+							</button>
 
-							<!--<button class="btn btn-success" ng-show="player.brincando == true" ng-click="adicionaTempo(player)">Tempo++</button>-->
-
-							<button class="btn btn-success" ng-show="player.brincando == true" confirmed-click="adicionaTempo(player)" ng-confirm-click="Adicionar mais 15 minutos?">Tempo++</button>
-
-							<button class="btn btn-info" ng-show="player.brincando == true && player.historico[player.historico.length - 1].pago == true"
-							ng-click="abreTelaPagamento(player)">Pagar++</button>
-
-							<button class="btn btn-danger" ng-show="player.brincando == true && player.historico[player.historico.length - 1].pago == true"
-							ng-click="finalizaBrincadeira(player)">Gravar</button>
+							<div uib-collapse="isCollapsed">
+								<div class="well well-lg">
+									<pagto-directive cadastro="player"></pagto-directive>
+								</div>
+							</div>
 						</td>
 					</tr>
 				</tbody>

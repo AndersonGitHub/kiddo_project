@@ -29,7 +29,7 @@ angular.module('angularApp').factory('ajaxCadastro', function ($http) {
       });
   };
 
-  function updateCadastro(cadastro_update, callback) {
+  function updateCadastro(cadastro_update, callback) {    
     $http.put(CADASTRO_API_URL, cadastro_update).success(
       function (response) {
         callback();

@@ -1,18 +1,51 @@
-angular.module('angularApp', ['ngRoute', 'ngAnimate']);
+angular.module('angularApp', ['ngRoute', 'ngAnimate', 'ui.bootstrap']);
 
 //exemplo de diretiva com controller próprio
-angular.module('angularApp').directive('myDirective', function () {
+angular.module('angularApp').directive('pagtoDirective', function () {
   return {
     restrict: 'E',
     replace: 'true',
-    templateUrl: "partials/myTemplate.html",
+    templateUrl: "partials/form_pagamento.html",
     scope: {
-      atributoA: '@',
-      atributoB: '='
+      cadastro: '='
     },
-    controller: function ($scope) {
-      $scope.message = 'sou um escopo isolado, o atributoA (@) recebe uma STRING com atribuição unilateral.' +
-      ' Já o atributoB (=) recebe um OBJETO, com atribuição bilateral';
+    controller: function ($scope, modelService, ajaxCadastro) {
+      $scope.model = modelService;
+      $scope.calculaValor = function (player) {
+        var index = player.historico.length - 1;
+        if (player.historico[index].com_meia) {
+          player.historico[index].adicional = $scope.model.config[0].valor_par_meias;
+        } else {
+          player.historico[index].adicional = 0;
+        }
+        player.historico[index].valor_final = (player.historico[index].valor_total - player.historico[index].desconto + player.historico[index].adicional);
+        player.historico[index].troco = (player.historico[index].valor_pago - player.historico[index].valor_final);
+      };
+      $scope.efetuaPagamento = function (cadastro) {
+        //if (cadastro.historico[cadastro.historico.length - 1].pago == false) {
+        var last_index = cadastro.historico.length - 1;
+        cadastro.historico[last_index].pago = true;
+        ajaxCadastro.updateCadastro(cadastro, function () {
+          listaCadastros();
+        });
+        //} else {
+        //  $scope.modals.open_cant_calculate_dialog();
+        // }
+
+      };
+      function listaCadastros() {
+        //passar função callback para o ajax service
+        ajaxCadastro.readCadastro(function (data) {
+          modelService.cadastros = data;
+          modelService.players.length = 0;
+          modelService.cadastros.forEach(function (cadastro) {
+            if (cadastro.brincando == true || cadastro.standing_by == true) {
+              modelService.players.push(cadastro);
+            }
+          });
+        });
+      };
+
     }
   };
 });
@@ -22,10 +55,6 @@ angular.module('angularApp').config(function ($routeProvider) {
     .when('/', {
       templateUrl: 'partials/table_playground.html',
       controller: 'mainController'
-    })
-    .when('/form_pagamento', {
-      templateUrl: 'partials/form_pagamento.html',
-      controller: 'pagamentoController'
     })
     .when('/form_cadastro', {
       templateUrl: 'partials/form_cadastro.html',
@@ -87,13 +116,16 @@ angular.module('angularApp').config(function ($routeProvider) {
 //   $scope.pageClass = 'precos-class';
 // });
 
-angular.module('angularApp').controller('mainController', function ($scope, $http, $timeout, $interval, modelService, ajaxCadastro, ajaxPrecos, ajaxDespesas, ajaxReceita) {
+angular.module('angularApp').controller('mainController', function ($scope, $http, $timeout, $interval, $routeParams,
+  modelService, ajaxCadastro, ajaxPrecos, ajaxDespesas, ajaxReceita) {
 
   $scope.model = modelService;
-  
+
   $scope.pageClass = 'default-class';
 
   $scope.partial = false;
+
+  $scope.isCollapsed = true;
 
   $scope.showPartial = function () {
     if ($scope.partial) {
@@ -120,40 +152,40 @@ angular.module('angularApp').controller('mainController', function ($scope, $htt
     player.historico[index].troco = (player.historico[index].valor_pago - player.historico[index].valor_final);
   }; 
   
-//   //progress bar
-//   var updateProgressBar = function () {
-//     $scope.model.players.forEach(function (player) {
-//       if (player.brincando || player.standing_by) {
-//         var inicio = Date.parse(player.historico[player.historico.length - 1].inicio);
-//         var fim = Date.parse(player.historico[player.historico.length - 1].fim);
-//         var agora = Date.now();
-// 
-//         var tempo_total_millis = (fim - inicio);
-//         var tempo_decorrido_millis = (agora - inicio);
-//         
-//         //*******
-//         var hora_millis = (60000 * 60);
-//         var minuto_millis = 60000;
-//         var tempo_restante_millis = (fim - agora);
-//         var tempo_restante = new Date();
-//         tempo_restante.setHours(Math.floor(tempo_restante_millis / hora_millis), Math.floor(tempo_restante_millis / minuto_millis));
-//         var progresso = Math.round((tempo_decorrido_millis * 100) / tempo_total_millis);
-//         if (progresso < 100) {
-//           player.historico[player.historico.length - 1].progresso = progresso;
-//           player.historico[player.historico.length - 1].tempo_restante = tempo_restante;
-//         } else if (progresso < 0) {
-//           player.historico[player.historico.length - 1].progresso = 0;
-//           player.historico[player.historico.length - 1].tempo_restante = tempo_restante;
-//         } else {
-//           player.historico[player.historico.length - 1].progresso = 100;
-//           player.historico[player.historico.length - 1].tempo_restante = tempo_restante;
-//         }
-//       }
-//     });
-//   };
+    //progress bar
+    var updateProgressBar = function () {
+      $scope.model.players.forEach(function (player) {
+        if (player.brincando || player.standing_by) {
+          var inicio = Date.parse(player.historico[player.historico.length - 1].inicio);
+          var fim = Date.parse(player.historico[player.historico.length - 1].fim);
+          var agora = Date.now();
+  
+          var tempo_total_millis = (fim - inicio);
+          var tempo_decorrido_millis = (agora - inicio);
+          
+          //*******
+          var hora_millis = (60000 * 60);
+          var minuto_millis = 60000;
+          var tempo_restante_millis = (fim - agora);
+          var tempo_restante = new Date();
+          tempo_restante.setHours(Math.floor(tempo_restante_millis / hora_millis), Math.floor(tempo_restante_millis / minuto_millis));
+          var progresso = Math.round((tempo_decorrido_millis * 100) / tempo_total_millis);
+          if (progresso < 100) {
+            player.historico[player.historico.length - 1].progresso = progresso;
+            player.historico[player.historico.length - 1].tempo_restante = tempo_restante;
+          } else if (progresso < 0) {
+            player.historico[player.historico.length - 1].progresso = 0;
+            player.historico[player.historico.length - 1].tempo_restante = tempo_restante;
+          } else {
+            player.historico[player.historico.length - 1].progresso = 100;
+            player.historico[player.historico.length - 1].tempo_restante = tempo_restante;
+          }
+        }
+      });
+    };
 
-  // $timeout(updateProgressBar, 0);
-  // $interval(updateProgressBar, 5000);
+  $timeout(updateProgressBar, 0);
+  $interval(updateProgressBar, 5000);
 
   function get_data_selecionada() {
     var dia = Number(angular.copy($scope.model.calendario.dia));
@@ -235,8 +267,6 @@ angular.module('angularApp').controller('mainController', function ($scope, $htt
       ajaxCadastro.updateCadastro(cadastro, function () {
         listaCadastros();
       });
-    } else {
-      $scope.modals.open_still_standingBy_dialog();
     }
   };
 
@@ -287,8 +317,6 @@ angular.module('angularApp').controller('mainController', function ($scope, $htt
         //criar tela modal
         window.alert("Hora final deve ser maior que hora inicial");
       }
-    } else {
-      $scope.modals.open_still_playing_dialog();
     }
   };
 
@@ -311,37 +339,37 @@ angular.module('angularApp').controller('mainController', function ($scope, $htt
     }
   };
 
-  $scope.abreTelaPagamento = function (cadastro) {
-    if (cadastro.standing_by == false) {
-      $scope.calculaValor(cadastro);
-      $scope.modals.open_modal_pagamento(cadastro);
-      $scope.$digest();
-    } else {
-      $scope.modals.open_cant_calculate_dialog();
-    }
-  };
+  // $scope.abreTelaPagamento = function () {
+  //   if (cadastro.standing_by == false) {
+  //     $scope.calculaValor(cadastro);
+  //     $scope.modals.open_modal_pagamento(cadastro);
+  //     $scope.$digest();
+  //   } else {
+  //     $scope.modals.open_cant_calculate_dialog();
+  //   }
+  // };
 
   // $scope.abreTelaPagamentoAdd = function (cadastro) {
   //   $scope.modals.open_modal_pagamento_add(cadastro);
   // };
 
-  $scope.efetuaPagamento = function (cadastro) {
-    //if (cadastro.historico[cadastro.historico.length - 1].pago == false) {
-    var last_index = cadastro.historico.length - 1;
-    cadastro.historico[last_index].pago = true;
-    ajaxCadastro.updateCadastro(cadastro, function () {
-      listaCadastros();
-    });
-    //} else {
-    //  $scope.modals.open_cant_calculate_dialog();
-    // }
-
-  };
+  //   $scope.efetuaPagamento = function (cadastro) {
+  //     //if (cadastro.historico[cadastro.historico.length - 1].pago == false) {
+  //     var last_index = cadastro.historico.length - 1;
+  //     cadastro.historico[last_index].pago = true;
+  //     ajaxCadastro.updateCadastro(cadastro, function () {
+  //       listaCadastros();
+  //     });
+  //     //} else {
+  //     //  $scope.modals.open_cant_calculate_dialog();
+  //     // }
+  // 
+  //   };
 
   $scope.finalizaBrincadeira = function (cadastro) {
     var last_index = cadastro.historico.length - 1;
     if (cadastro.historico[last_index].pago == true) {
-      cadastro.brincando = false;
+      cadastro.brincando = false;   
       
       //salvar nova receita
       var nova_receita = {
@@ -355,10 +383,14 @@ angular.module('angularApp').controller('mainController', function ($scope, $htt
       ajaxCadastro.updateCadastro(cadastro, function () {
         listaCadastros();
       });
-    } else {
-      $scope.modals.open_cant_calculate_dialog();
     }
+  };
 
+  $scope.goHome = function (cadastro) {
+    cadastro.standing_by = false;
+    ajaxCadastro.updateCadastro(cadastro, function () {
+      listaCadastros();
+    });
   };
 
   $scope.excluiCadastro = function (id) {
@@ -374,7 +406,7 @@ angular.module('angularApp').controller('mainController', function ($scope, $htt
       $scope.model.cadastros = data;
       $scope.model.players.length = 0;
       $scope.model.cadastros.forEach(function (cadastro) {
-        if (cadastro.brincando || cadastro.standing_by) {
+        if (cadastro.brincando == true || cadastro.standing_by == true) {
           $scope.model.players.push(cadastro);
         }
       });
