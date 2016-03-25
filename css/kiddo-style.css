@@ -99,17 +99,20 @@
 	to { transform: translateZ(-3000px) rotateZ(360deg); opacity: 0; }
 }
 
-/* com esta configuração, todas as páginas possuem a mesma animação ao entrar e sair:
-.ng-enter           { animation: scaleUp 0.5s both ease-in; z-index: 8888; }
-.ng-leave           { animation: slideOutLeft 0.5s both ease-in; z-index: 9999; }*/
-
-.ng-enter       { z-index: 8888; }
-.ng-leave       { z-index: 9999; }
+ /*com esta configuração, todas as páginas possuem a mesma animação ao entrar e sair:*/
+.ng-enter{
+    -webkit-animation:scaleUp 0.5s both ease-in;
+	-moz-animation:scaleUp 0.5s both ease-in; 
+    animation: scaleUp 0.5s both ease-in; z-index: 8888;}
+.ng-leave{
+    -webkit-animation:slideOutLeft 0.5s both ease-in;
+	-moz-animation:slideOutLeft 0.5s both ease-in; 
+    animation:slideOutLeft 0.5s both ease-in; z-index: 9999;}
 
 /* page specific animations (abaixo código para animações específicas para cada tela)------------------------ */
 
 /* playground -------------------------- */
-.playground-class.ng-enter{
+/*.playground-class.ng-enter{
     -webkit-animation:scaleUp 0.5s both ease-in;
 	-moz-animation:scaleUp 0.5s both ease-in; 
     animation: scaleUp 0.5s both ease-in; }
@@ -119,37 +122,37 @@
 	-moz-transform-origin: 0% 0%;
 	-moz-animation: rotateFall 1s both ease-in; 
     transform-origin: 0% 0%; 
-    animation: rotateFall 1s both ease-in; }
+    animation: rotateFall 1s both ease-in; }*/
  
  /* pagamento -------------------------- */
-.pagamento-class.ng-enter{
+/*.pagamento-class.ng-enter{
     -webkit-animation:slideInRight 0.5s both ease-in;
 	-moz-animation:slideInRight 0.5s both ease-in; 
     animation:slideInRight 0.5s both ease-in; }  
 .pagamento-class.ng-leave{
      -webkit-animation:slideOutLeft 0.5s both ease-in;
 	-moz-animation:slideOutLeft 0.5s both ease-in; 
-    animation:slideOutLeft 0.5s both ease-in; }
+    animation:slideOutLeft 0.5s both ease-in; }*/
 
 /* cadastro -------------------------- */
-.cadastro-class.ng-enter{ 
+/*.cadastro-class.ng-enter{ 
     -webkit-animation:slideInUp 0.5s both ease-in;
 	-moz-animation:slideInUp 0.5s both ease-in;
     transform-origin: 50% 50%; animation: rotateOutNewspaper .5s both ease-in; }
-.cadastro-class.ng-leave{
+.cadastro-class.ng-leave{*/
     /*-webkit-transform-origin: 50% 50%;
 	-webkit-animation: rotateOutNewspaper .5s both ease-in;
 	-moz-transform-origin: 50% 50%;
 	-moz-animation: rotateOutNewspaper .5s both ease-in; 
     animation:slideInUp 0.5s both ease-in; */
-	 -webkit-animation:slideOutLeft 0.5s both ease-in;
+	 /*-webkit-animation:slideOutLeft 0.5s both ease-in;
 	-moz-animation:slideOutLeft 0.5s both ease-in; 
     animation:slideOutLeft 0.5s both ease-in; }
-	}
+	}*/
 
 	
 /* clientes -------------------------- */
-.clientes-class.ng-enter{
+/*.clientes-class.ng-enter{
     -webkit-animation:scaleUp 0.5s both ease-in;
 	-moz-animation:scaleUp 0.5s both ease-in; 
     animation: scaleUp 0.5s both ease-in; }
@@ -159,32 +162,32 @@
 	-moz-transform-origin: 0% 0%;
 	-moz-animation: rotateFall 1s both ease-in; 
     transform-origin: 0% 0%; 
-    animation: rotateFall 1s both ease-in; }
+    animation: rotateFall 1s both ease-in; }*/
  
  /* despesas -------------------------- */
-.despesas-class.ng-enter{
+/*.despesas-class.ng-enter{
     -webkit-animation:slideInRight 0.5s both ease-in;
 	-moz-animation:slideInRight 0.5s both ease-in; 
     animation:slideInRight 0.5s both ease-in; }  
 .despesas-class.ng-leave{
      -webkit-animation:slideOutLeft 0.5s both ease-in;
 	-moz-animation:slideOutLeft 0.5s both ease-in; 
-    animation:slideOutLeft 0.5s both ease-in; }
+    animation:slideOutLeft 0.5s both ease-in; }*/
 
 /* historico -------------------------- */
-.historico-class.ng-enter{ 
-    -webkit-animation:slideInUp 0.5s both ease-in;
+/*.historico-class.ng-enter{ */
+    /*-webkit-animation:slideInUp 0.5s both ease-in;
 	-moz-animation:slideInUp 0.5s both ease-in;
-    transform-origin: 50% 50%; animation: rotateOutNewspaper .5s both ease-in; }
-.historico-class.ng-leave{
-    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%; animation: rotateOutNewspaper .5s both ease-in; }*/
+/*.historico-class.ng-leave{*/
+    /*-webkit-transform-origin: 50% 50%;
 	-webkit-animation: rotateOutNewspaper .5s both ease-in;
 	-moz-transform-origin: 50% 50%;
 	-moz-animation: rotateOutNewspaper .5s both ease-in; 
-    animation:slideInUp 0.5s both ease-in; }	
+    animation:slideInUp 0.5s both ease-in; }	*/
 	
 /* relatorio -------------------------- */
-.relatorio-class.ng-enter{
+/*.relatorio-class.ng-enter{
     -webkit-animation:scaleUp 0.5s both ease-in;
 	-moz-animation:scaleUp 0.5s both ease-in; 
     animation: scaleUp 0.5s both ease-in; }
@@ -194,14 +197,14 @@
 	-moz-transform-origin: 0% 0%;
 	-moz-animation: rotateFall 1s both ease-in; 
     transform-origin: 0% 0%; 
-    animation: rotateFall 1s both ease-in; }
+    animation: rotateFall 1s both ease-in; }*/
  
  /* precos -------------------------- */
-.precos-class.ng-enter{
+/*.precos-class.ng-enter{
     -webkit-animation:slideInRight 0.5s both ease-in;
 	-moz-animation:slideInRight 0.5s both ease-in; 
     animation:slideInRight 0.5s both ease-in; }  
 .precos-class.ng-leave{
      -webkit-animation:slideOutLeft 0.5s both ease-in;
 	-moz-animation:slideOutLeft 0.5s both ease-in; 
-    animation:slideOutLeft 0.5s both ease-in; }
+    animation:slideOutLeft 0.5s both ease-in; }*/
