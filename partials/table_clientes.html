@@ -7,14 +7,14 @@
 			<table class="table table-hover table-striped table-condensed" style="overflow-y: auto; height: 500px; display: block;" role="table">
 				<thead>
 					<tr>
-						<th class="col-md-2">
+						<th class="col-md-3">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
 								<input type="text" class="form-control" ng-model="model.filtro" ng-model-options="{updateOn:'default blur', debounce:{'default':1000, 'blur':0}}"
 								placeholder="Busca" />
 							</div>
 						</th>
-						<th class="col-md-2"><a href="" ng-click="model.ordena('nome_crianca')">Criança</a></th>
+						<th class="col-md-1"><a href="" ng-click="model.ordena('nome_crianca')">Criança</a></th>
 						<th class="col-md-1"><a href="" ng-click="model.ordena('dn_crianca')">Nascimento</a></th>
 						<th class="col-md-1"><a href="" ng-click="model.ordena('nome_responsavel')">Responsável</a></th>
 						<th class="col-md-1"><a href="" ng-click="model.ordena('email')">Email</a></th>

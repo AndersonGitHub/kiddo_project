@@ -33,10 +33,9 @@ exports.save = function (configParameters, callback) {
   });
 };
 
-
-exports.update = function (configParameters, callback) {
+exports.update = function (configParameters, callback) {  
   db.PrecosModel.findById(configParameters._id, function (err, config) {
-    if (configParameters.valor_hora) {
+    if (configParameters.valor_hora) {      
       config.valor_hora = configParameters.valor_hora;
     }
     if (configParameters.valor_par_meias) {

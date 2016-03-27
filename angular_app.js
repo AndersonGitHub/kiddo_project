@@ -117,7 +117,7 @@ angular.module('angularApp').config(function ($routeProvider) {
 // });
 
 angular.module('angularApp').controller('mainController', function ($scope, $http, $timeout, $interval, $routeParams,
-  modelService, ajaxCadastro, ajaxPrecos, ajaxDespesas, ajaxReceita) {
+  modelService, ajaxCadastro, ajaxPrecos, ajaxDespesas, ajaxReceita, $location) {
 
   $scope.model = modelService;
 
@@ -266,6 +266,7 @@ angular.module('angularApp').controller('mainController', function ($scope, $htt
       cadastro.historico.push(novo_historico);
       ajaxCadastro.updateCadastro(cadastro, function () {
         listaCadastros();
+        $location.path('/');
       });
     }
   };
@@ -501,9 +502,12 @@ angular.module('angularApp').controller('mainController', function ($scope, $htt
     });
   };
 
-  $scope.atualiza = function (config_update) {
+  $scope.atualiza_config = function () {
+    var config_update = angular.copy($scope.model.config[0]);    
     ajaxPrecos.updateConfig(config_update, function (config_data) {
-      $scope.model.config = config_data;
+      $scope.model.config.length = 0;
+      $scope.model.config = angular.fromJson(config_data);
+      $location.path('/');
     });
   };
 });

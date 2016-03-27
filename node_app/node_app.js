@@ -284,8 +284,8 @@ app.get('/config/:id', function (req, res) {
 
 app.post('/config/', function (req, res) {
   var configParameters = {
-    valor_hora : validator.trim(validator.escape(req.body.valor_hora)),
-    valor_par_meias: validator.trim(validator.escape(req.body.valor_par_meias))    
+    valor_hora : req.body.valor_hora,
+    valor_par_meias: req.body.valor_par_meias    
   };
   configController.save(configParameters, function(err, resp) {
     if(err) res.send(err);
@@ -293,14 +293,14 @@ app.post('/config/', function (req, res) {
     );
     });
     
-app.put('/config/', function(req, res) {
-  var config_update = {
-    _id : validator.trim(validator.escape(req.body._id)),
-    valor_hora : validator.trim(validator.escape(req.body.valor_hora)),
-    valor_par_meias : validator.trim(validator.escape(req.body.valor_par_meias))    
-  }
+app.put('/config/', function(req, res) {    
+  // var config_update = {    
+  //   _id : req.body._id,
+  //   valor_hora : req.body.valor_hora,
+  //   valor_par_meias : req.body.valor_par_meias    
+  // }
 	  
-	configController.update(config_update, function(resp) {
+	configController.update(req.body, function(resp) {
 		res.json(resp);
 	});
 });
