@@ -1,7 +1,7 @@
-var db = require('../node_app.js');
+var models = require('../mongoose_models.js');
 
-exports.list = function (callback) {
-  db.ReceitaModel.find({}, function (error, docs) {
+module.exports.list = function (callback) {
+  models.ReceitaModel.find({}, function (error, docs) {
     if (error) {
       callback({ error: 'Nao foi possivel retornar as receitas.' });
     } else {
@@ -10,8 +10,8 @@ exports.list = function (callback) {
   });
 };
 
-exports.get = function (id, callback) {
-  db.ReceitaModel.findById(id, function (error, despesa) {
+module.exports.get = function (id, callback) {
+  models.ReceitaModel.findById(id, function (error, despesa) {
     if (error) {
       callback({ error: 'Nao foi possivel retornar a receita' });
     } else {
@@ -20,8 +20,8 @@ exports.get = function (id, callback) {
   });
 };
 
-exports.save = function (formParameters, callback) {
-  new db.ReceitaModel({    
+module.exports.save = function (formParameters, callback) {
+  new models.ReceitaModel({    
     valor: formParameters.valor,
     forma_pagamento: formParameters.forma_pagamento,    
     data : formParameters.data
@@ -34,8 +34,8 @@ exports.save = function (formParameters, callback) {
   });
 };
 
-exports.update = function (receita_update, callback) {
-  db.ReceitaModel.findById(receita_update.id, function (err, receita) {    
+module.exports.update = function (receita_update, callback) {
+  models.ReceitaModel.findById(receita_update.id, function (err, receita) {    
     if (Boolean(receita_update.valor)) {receita.valor = receita_update.valor;}
     if (Boolean(receita_update.forma_pagamento)) {receita.forma_pagamento = receita_update.forma_pagamento;}    
     if (Boolean(receita_update.data)) {receita.data = receita_update.data;}       
@@ -51,8 +51,8 @@ exports.update = function (receita_update, callback) {
   });
 };
 
-exports.delete = function (id, callback) {
-  db.ReceitaModel.findById(id, function (error, receita) {
+module.exports.delete = function (id, callback) {
+  models.ReceitaModel.findById(id, function (error, receita) {
     if (error) {
       callback({ error: 'Nao foi possivel remover a receita' });
     } else {

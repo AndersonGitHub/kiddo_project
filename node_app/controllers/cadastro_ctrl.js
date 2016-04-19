@@ -1,7 +1,7 @@
-var db = require('../node_app.js');
+var models = require('../mongoose_models.js');
 
-exports.listCadastro = function (callback) {
-  db.CadastroModel.find({}, function (error, docs) {
+module.exports.listCadastro = function (callback) {
+  models.CadastroModel.find({}, function (error, docs) {
     if (error) {
       callback({ error: 'Nao foi possivel retornar os cadastros.' });
     } else {
@@ -10,8 +10,8 @@ exports.listCadastro = function (callback) {
   });
 };
 
-exports.getCadastro = function (id, callback) {
-  db.CadastroModel.findById(id, function (error, cadastro) {
+module.exports.getCadastro = function (id, callback) {
+  models.CadastroModel.findById(id, function (error, cadastro) {
     if (error) {
       callback({ error: 'Nao foi possivel retornar o cadastro' });
     } else {
@@ -20,8 +20,8 @@ exports.getCadastro = function (id, callback) {
   });
 };
 
-exports.saveCadastro = function (formParameters, callback) {
-  new db.CadastroModel({
+module.exports.saveCadastro = function (formParameters, callback) {
+  new models.CadastroModel({
     nome_crianca: formParameters.nome_crianca,
     dn_crianca: formParameters.dn_crianca,
     nome_responsavel: formParameters.nome_responsavel,
@@ -41,8 +41,8 @@ exports.saveCadastro = function (formParameters, callback) {
   });
 };
 
-exports.updateCadastro = function (cadastro_update, callback) {
-  db.CadastroModel.findById(cadastro_update.id, function (err, cadastro) {
+module.exports.updateCadastro = function (cadastro_update, callback) {
+  models.CadastroModel.findById(cadastro_update.id, function (err, cadastro) {
     if (Boolean(cadastro_update.nome_crianca)) { cadastro.nome_crianca = cadastro_update.nome_crianca; }
     if (Boolean(cadastro_update.dn_crianca)) { cadastro.dn_crianca = cadastro_update.dn_crianca; }
     if (Boolean(cadastro_update.nome_responsavel)) { cadastro.nome_responsavel = cadastro_update.nome_responsavel; }
@@ -65,8 +65,8 @@ exports.updateCadastro = function (cadastro_update, callback) {
   });
 };
 
-exports.deleteCadastro = function (id, callback) {
-  db.CadastroModel.findById(id, function (error, cadastro) {
+module.exports.deleteCadastro = function (id, callback) {
+  models.CadastroModel.findById(id, function (error, cadastro) {
     if (error) {
       callback({ error: 'Nao foi possivel remover o cadastro' });
     } else {

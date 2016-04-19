@@ -1,9 +1,3 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var path = require('path');
-var app = express(),
-validator = require('validator');
-
 //controllers
 var cadastroController = require('./controllers/cadastro_ctrl.js');
 var configController = require('./controllers/config_ctrl.js');
@@ -11,100 +5,13 @@ var historicoController = require('./controllers/historico_ctrl.js');
 var despesaController = require('./controllers/despesa_ctrl.js');
 var receitaController = require('./controllers/receita_ctrl.js'); 
 
-app.all('*', function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  next();
-});
+//server
+var server = require('./express_server.js');
 
-app.use(express.static(path.join(__dirname, '../')));
-
-app.use(bodyParser.urlencoded({
-  extended: true
-  }));
-  
-app.use(bodyParser.json());
-
-var port = 5000;
-app.listen(port, function () {  
-  console.log("Application listening on port " + port);
-});
-
-//mongoose
-var mongoose = require('mongoose');
-var db_string = 'mongodb://127.0.0.1/test';
-mongoose.connect(db_string);
-
-var db = mongoose.connection;
-
-db.on('error', console.error.bind(console, 'connection error.'));
-var HistoricoModel = undefined;
-var CadastroModel = undefined;
-var DespesaModel = undefined;
-var ReceitaModel = undefined;
-var PrecosModel = undefined;
-
-db.once('open', function () {  
-  var historicoSchema = mongoose.Schema({
-    data: Date,
-    inicio: Date,
-    fim: Date,
-    tempo_restante : Date,
-    valor_total: Number,
-    valor_final: Number,
-    desconto: Number,
-    valor_pago: Number,
-    troco: Number,
-    com_meia: Boolean,
-    adicional: Number,
-    forma_pagamento: String,
-    pago: Boolean,
-    progresso: Number
-  });
-  
-  var cadastroSchema = mongoose.Schema({
-    nome_crianca: String,
-    dn_crianca: Date,
-    nome_responsavel: String,
-    email: String,
-    telefone: String,
-    tel_operadora: String,
-    observacoes: String,
-    brincando: Boolean,
-    standing_by: Boolean,
-    historico: [historicoSchema]
-  }); 
-
-  var despesaSchema = mongoose.Schema({    
-    valor: Number,
-    descricao: String,
-    data: Date
-  });
-  
-  var receitaSchema = mongoose.Schema({    
-    valor: Number,
-    forma_pagamento: String,
-    data: Date   
-  });
-  
-  var precosSchema = mongoose.Schema({
-    valor_hora: Number,
-    valor_par_meias: Number
-  });
-  
-  exports.HistoricoModel = mongoose.model('HistoricoModel', historicoSchema);
-  exports.CadastroModel = mongoose.model('CadastroModel', cadastroSchema);
-  exports.DespesaModel = mongoose.model('DespesaModel', despesaSchema);
-  exports.ReceitaModel = mongoose.model('ReceitaModel', receitaSchema);
-  exports.PrecosModel = mongoose.model('PrecosModel', precosSchema);    
- });
- 
- 
+var validator = require('validator'); 
  
  //Despesa==================================================================
-app.get('/despesa/', function (req, res) {  
+server.get('/despesa/', function (req, res) {  
   despesaController.list(
     function(resp) {      
       res.json(resp);
@@ -112,7 +19,7 @@ app.get('/despesa/', function (req, res) {
   );  
 });
 
-app.get('/despesa/:id', function (req, res) {
+server.get('/despesa/:id', function (req, res) {
   var id = validator.trim(validator.escape(req.param('id')));
   despesaController.get(id, function(err, resp) {
     if(err) res.send(err);
@@ -120,7 +27,7 @@ app.get('/despesa/:id', function (req, res) {
     });
 });
 
-app.post('/despesa/', function (req, res) {
+server.post('/despesa/', function (req, res) {
   var despesaParameters = {    
     valor : validator.trim(validator.escape(req.body.valor)),
     descricao : validator.trim(validator.escape(req.body.descricao)),
@@ -132,7 +39,7 @@ app.post('/despesa/', function (req, res) {
     );
     });
     
-app.put('/despesa/', function(req, res) {
+server.put('/despesa/', function(req, res) {
   var despesaUpdate = {    
     valor : validator.trim(validator.escape(req.body.valor)),
     descricao : validator.trim(validator.escape(req.body.descricao)),
@@ -144,7 +51,7 @@ app.put('/despesa/', function(req, res) {
 	});
 });
 
-app.delete('/despesa/:id', function (req, res) {  
+server.delete('/despesa/:id', function (req, res) {  
   var id = validator.trim(validator.escape(req.param('id')));
   despesaController.delete(id, function(err, resp) {
     if(err) res.send(err);
@@ -153,7 +60,7 @@ app.delete('/despesa/:id', function (req, res) {
 });  
 
 //Receita================================================
-app.get('/receita/', function (req, res) {  
+server.get('/receita/', function (req, res) {  
   receitaController.list(
     function(resp) {      
       res.json(resp);
@@ -161,7 +68,7 @@ app.get('/receita/', function (req, res) {
   );  
 });
 
-app.get('/receita/:id', function (req, res) {
+server.get('/receita/:id', function (req, res) {
   var id = validator.trim(validator.escape(req.param('id')));
   receitaController.get(id, function(err, resp) {
     if(err) res.send(err);
@@ -169,7 +76,7 @@ app.get('/receita/:id', function (req, res) {
     });
 });
 
-app.post('/receita/', function (req, res) {
+server.post('/receita/', function (req, res) {
   var receitaParameters = {    
     valor : req.body.valor,
     forma_pagamento : validator.trim(validator.escape(req.body.forma_pagamento)),
@@ -181,7 +88,7 @@ app.post('/receita/', function (req, res) {
     );
     });
     
-app.put('/receita/', function(req, res) {
+server.put('/receita/', function(req, res) {
   var receitaUpdate = {    
     valor : validator.trim(validator.escape(req.body.valor)),
     forma_pagamento : validator.trim(validator.escape(req.body.forma_pagamento)),
@@ -193,7 +100,7 @@ app.put('/receita/', function(req, res) {
 	});
 });
 
-app.delete('/receita/:id', function (req, res) {  
+server.delete('/receita/:id', function (req, res) {  
   var id = validator.trim(validator.escape(req.param('id')));
   receitaController.delete(id, function(err, resp) {
     if(err) res.send(err);
@@ -202,7 +109,7 @@ app.delete('/receita/:id', function (req, res) {
 });  
     
 //Cadastro================================================
-app.get('/cadastro/', function (req, res) {  
+server.get('/cadastro/', function (req, res) {  
   cadastroController.listCadastro(
     function(resp) {      
       res.json(resp);
@@ -210,7 +117,7 @@ app.get('/cadastro/', function (req, res) {
   );  
 });
 
-app.get('/cadastro/:id', function (req, res) {
+server.get('/cadastro/:id', function (req, res) {
   var id = validator.trim(validator.escape(req.body._id));
   cadastroController.get(id, function(err, resp) {
     if(err) res.send(err);
@@ -218,7 +125,7 @@ app.get('/cadastro/:id', function (req, res) {
     });
 });
 
-app.post('/cadastro/', function (req, res) {
+server.post('/cadastro/', function (req, res) {
   var mainFormParameters = {
     dn_crianca: validator.trim(validator.escape(req.body.dn_crianca)),    
     nome_responsavel: validator.trim(validator.escape(req.body.nome_responsavel)),    
@@ -237,7 +144,7 @@ app.post('/cadastro/', function (req, res) {
     );
     });
     
-app.put('/cadastro/', function(req, res) {  
+server.put('/cadastro/', function(req, res) {  
   var mainFormParameters = {
     id : validator.trim(validator.escape(req.body._id)),
     nome_crianca: validator.trim(validator.escape(req.body.nome_crianca)),
@@ -257,7 +164,7 @@ app.put('/cadastro/', function(req, res) {
 	});
 });
 
-app.delete('/cadastro/:id', function (req, res) {
+server.delete('/cadastro/:id', function (req, res) {
   var id = validator.trim(validator.escape(req.params.id));
   cadastroController.deleteCadastro(id, function(err, resp) {
     if(err) res.send(err);
@@ -266,7 +173,7 @@ app.delete('/cadastro/:id', function (req, res) {
 });  
 
 //Configurações==================================================================
-app.get('/config/', function (req, res) {  
+server.get('/config/', function (req, res) {  
   configController.list(
     function(resp) {      
       res.json(resp);
@@ -274,7 +181,7 @@ app.get('/config/', function (req, res) {
   );  
 });
 
-app.get('/config/:id', function (req, res) {
+server.get('/config/:id', function (req, res) {
   var id = validator.trim(validator.escape(req.param('id')));
   configController.get(id, function(err, resp) {
     if(err) res.send(err);
@@ -282,7 +189,7 @@ app.get('/config/:id', function (req, res) {
     });
 });
 
-app.post('/config/', function (req, res) {
+server.post('/config/', function (req, res) {
   var configParameters = {
     valor_hora : req.body.valor_hora,
     valor_par_meias: req.body.valor_par_meias    
@@ -293,7 +200,7 @@ app.post('/config/', function (req, res) {
     );
     });
     
-app.put('/config/', function(req, res) {    
+server.put('/config/', function(req, res) {    
   // var config_update = {    
   //   _id : req.body._id,
   //   valor_hora : req.body.valor_hora,
@@ -305,7 +212,7 @@ app.put('/config/', function(req, res) {
 	});
 });
 
-app.delete('/config/:id', function (req, res) {  
+server.delete('/config/:id', function (req, res) {  
   var id = validator.trim(validator.escape(req.param('id')));
   configController.delete(id, function(err, resp) {
     if(err) res.send(err);
@@ -315,7 +222,7 @@ app.delete('/config/:id', function (req, res) {
 
 
 //Histórico==================================================================
-app.get('/history/', function (req, res) {  
+server.get('/history/', function (req, res) {  
   historicoController.list(
     function(resp) {      
       res.json(resp);
@@ -323,7 +230,7 @@ app.get('/history/', function (req, res) {
   );  
 });
 
-app.get('/history/:id', function (req, res) {
+server.get('/history/:id', function (req, res) {
   var id = validator.trim(validator.escape(req.param('id')));
   historicoController.get(id, function(err, resp) {
     if(err) res.send(err);
@@ -331,7 +238,7 @@ app.get('/history/:id', function (req, res) {
     });
 });
 
-app.post('/history/', function (req, res) {
+server.post('/history/', function (req, res) {
   var histParameters = {    
     data: validator.trim(validator.escape(req.body.data)),
     inicio: validator.trim(validator.escape(req.body.inicio)),    
@@ -348,7 +255,7 @@ app.post('/history/', function (req, res) {
     );
     });
     
-app.put('/history/', function(req, res) {
+server.put('/history/', function(req, res) {
   var id = validator.trim(validator.escape(req.param('id')));
   var data = validator.trim(validator.escape(req.param('data')));
   var inicio = validator.trim(validator.escape(req.param('inicio')));
@@ -364,7 +271,7 @@ app.put('/history/', function(req, res) {
 	});
 });
 
-app.delete('/history/:id', function (req, res) {  
+server.delete('/history/:id', function (req, res) {  
   var id = validator.trim(validator.escape(req.param('id')));
   historicoController.delete(id, function(err, resp) {
     if(err) res.send(err);

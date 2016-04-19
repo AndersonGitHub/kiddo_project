@@ -1,7 +1,7 @@
-var db = require('../node_app.js');
+var models = require('../mongoose_models.js');
 
-exports.list = function (callback) {
-  db.HistoricoModel.find({}, function (error, historico) {
+module.exports.list = function (callback) {
+  models.HistoricoModel.find({}, function (error, historico) {
     if (error) {
       callback({ error: 'Nao foi possivel retornar o histórico.' });
     } else {
@@ -10,8 +10,8 @@ exports.list = function (callback) {
   });
 };
 
-exports.get = function (id, callback) {
-  db.HistoricoModel.findById(id, function (error, historico) {
+module.exports.get = function (id, callback) {
+  models.HistoricoModel.findById(id, function (error, historico) {
     if (error) {
       callback({ error: 'Nao foi possivel retornar o histórico.' });
     } else {
@@ -20,8 +20,8 @@ exports.get = function (id, callback) {
   });
 };
 
-exports.save = function (histParameters, callback) {
-  new db.HistoricoModel({
+module.exports.save = function (histParameters, callback) {
+  new models.HistoricoModel({
     data: histParameters.data,
     inicio: histParameters.inicio,
     fim: histParameters.fim,
@@ -41,9 +41,9 @@ exports.save = function (histParameters, callback) {
 };
 
 
-exports.update = function (id, data, inicio, fim, valor_total, tempo_total, desconto, valor_pago, finalizado, calculado, callback) {
+module.exports.update = function (id, data, inicio, fim, valor_total, tempo_total, desconto, valor_pago, finalizado, calculado, callback) {
 
-  db.HistoricoModel.findById(id, function (err, historico) {
+  models.HistoricoModel.findById(id, function (err, historico) {
     if (data) {
       historico.data = data;
     }
@@ -79,8 +79,8 @@ exports.update = function (id, data, inicio, fim, valor_total, tempo_total, desc
   });
 };
 
-exports.delete = function (id, callback) {
-  db.HistoricoModel.findById(id, function (error, historico) {
+module.exports.delete = function (id, callback) {
+  models.HistoricoModel.findById(id, function (error, historico) {
     if (error) {
       callback({ error: 'Nao foi possivel remover o histórico.' });
     } else {

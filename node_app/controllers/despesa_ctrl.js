@@ -1,7 +1,7 @@
-var db = require('../node_app.js');
+var models = require('../mongoose_models.js');
 
-exports.list = function (callback) {
-  db.DespesaModel.find({}, function (error, docs) {
+module.exports.list = function (callback) {
+  models.DespesaModel.find({}, function (error, docs) {
     if (error) {
       callback({ error: 'Nao foi possivel retornar as despesas.' });
     } else {
@@ -10,8 +10,8 @@ exports.list = function (callback) {
   });
 };
 
-exports.get = function (id, callback) {
-  db.DespesaModel.findById(id, function (error, despesa) {
+module.exports.get = function (id, callback) {
+  models.DespesaModel.findById(id, function (error, despesa) {
     if (error) {
       callback({ error: 'Nao foi possivel retornar a despesa' });
     } else {
@@ -20,8 +20,8 @@ exports.get = function (id, callback) {
   });
 };
 
-exports.save = function (formParameters, callback) {
-  new db.DespesaModel({    
+module.exports.save = function (formParameters, callback) {
+  new models.DespesaModel({    
     valor: formParameters.valor,
     descricao: formParameters.descricao,    
     data : formParameters.data
@@ -34,8 +34,8 @@ exports.save = function (formParameters, callback) {
   });
 };
 
-exports.update = function (despesa_update, callback) {
-  db.DespesaModel.findById(despesa_update.id, function (err, despesa) {    
+module.exports.update = function (despesa_update, callback) {
+  models.DespesaModel.findById(despesa_update.id, function (err, despesa) {    
     if (Boolean(despesa_update.descricao)) {despesa.descricao = despesa_update.descricao;}
     if (Boolean(despesa_update.data)) {despesa.data = despesa_update.data;}       
     
@@ -50,8 +50,8 @@ exports.update = function (despesa_update, callback) {
   });
 };
 
-exports.delete = function (id, callback) {
-  db.DespesaModel.findById(id, function (error, despesa) {
+module.exports.delete = function (id, callback) {
+  models.DespesaModel.findById(id, function (error, despesa) {
     if (error) {
       callback({ error: 'Nao foi possivel remover a despesa' });
     } else {

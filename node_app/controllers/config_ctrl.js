@@ -1,7 +1,7 @@
-var db = require('../node_app.js');
+var models = require('../mongoose_models.js');
 
-exports.list = function (callback) {
-  db.PrecosModel.find({}, function (error, docs) {
+module.exports.list = function (callback) {
+  models.PrecosModel.find({}, function (error, docs) {
     if (error) {
       callback({ error: 'Nao foi possivel retornar os cadastros.' });
     } else {
@@ -10,8 +10,8 @@ exports.list = function (callback) {
   });
 };
 
-exports.get = function (id, callback) {
-  db.PrecosModel.findById(id, function (error, config) {
+module.exports.get = function (id, callback) {
+  models.PrecosModel.findById(id, function (error, config) {
     if (error) {
       callback({ error: 'Nao foi possivel retornar a configuração.' });
     } else {
@@ -20,8 +20,8 @@ exports.get = function (id, callback) {
   });
 };
 
-exports.save = function (configParameters, callback) {
-  new db.PrecosModel({
+module.exports.save = function (configParameters, callback) {
+  new models.PrecosModel({
     valor_hora: configParameters.valor_hora,
     valor_par_meias: configParameters.valor_par_meias
   }).save(function (error, config) {
@@ -33,8 +33,8 @@ exports.save = function (configParameters, callback) {
   });
 };
 
-exports.update = function (configParameters, callback) {  
-  db.PrecosModel.findById(configParameters._id, function (err, config) {
+module.exports.update = function (configParameters, callback) {  
+  models.PrecosModel.findById(configParameters._id, function (err, config) {
     if (configParameters.valor_hora) {      
       config.valor_hora = configParameters.valor_hora;
     }
@@ -52,8 +52,8 @@ exports.update = function (configParameters, callback) {
   });
 };
 
-exports.delete = function (id, callback) {
-  db.PrecosModel.findById(id, function (error, config) {
+module.exports.delete = function (id, callback) {
+  models.PrecosModel.findById(id, function (error, config) {
     if (error) {
       callback({ error: 'Nao foi possivel remover a configuração.' });
     } else {

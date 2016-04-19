@@ -152,37 +152,37 @@ angular.module('angularApp').controller('mainController', function ($scope, $htt
     player.historico[index].troco = (player.historico[index].valor_pago - player.historico[index].valor_final);
   }; 
   
-    //progress bar
-    var updateProgressBar = function () {
-      $scope.model.players.forEach(function (player) {
-        if (player.brincando || player.standing_by) {
-          var inicio = Date.parse(player.historico[player.historico.length - 1].inicio);
-          var fim = Date.parse(player.historico[player.historico.length - 1].fim);
-          var agora = Date.now();
-  
-          var tempo_total_millis = (fim - inicio);
-          var tempo_decorrido_millis = (agora - inicio);
+  //progress bar
+  var updateProgressBar = function () {
+    $scope.model.players.forEach(function (player) {
+      if (player.brincando || player.standing_by) {
+        var inicio = Date.parse(player.historico[player.historico.length - 1].inicio);
+        var fim = Date.parse(player.historico[player.historico.length - 1].fim);
+        var agora = Date.now();
+
+        var tempo_total_millis = (fim - inicio);
+        var tempo_decorrido_millis = (agora - inicio);
           
-          //*******
-          var hora_millis = (60000 * 60);
-          var minuto_millis = 60000;
-          var tempo_restante_millis = (fim - agora);
-          var tempo_restante = new Date();
-          tempo_restante.setHours(Math.floor(tempo_restante_millis / hora_millis), Math.floor(tempo_restante_millis / minuto_millis));
-          var progresso = Math.round((tempo_decorrido_millis * 100) / tempo_total_millis);
-          if (progresso < 100) {
-            player.historico[player.historico.length - 1].progresso = progresso;
-            player.historico[player.historico.length - 1].tempo_restante = tempo_restante;
-          } else if (progresso < 0) {
-            player.historico[player.historico.length - 1].progresso = 0;
-            player.historico[player.historico.length - 1].tempo_restante = tempo_restante;
-          } else {
-            player.historico[player.historico.length - 1].progresso = 100;
-            player.historico[player.historico.length - 1].tempo_restante = tempo_restante;
-          }
+        //*******
+        var hora_millis = (60000 * 60);
+        var minuto_millis = 60000;
+        var tempo_restante_millis = (fim - agora);
+        var tempo_restante = new Date();
+        tempo_restante.setHours(Math.floor(tempo_restante_millis / hora_millis), Math.floor(tempo_restante_millis / minuto_millis));
+        var progresso = Math.round((tempo_decorrido_millis * 100) / tempo_total_millis);
+        if (progresso < 100) {
+          player.historico[player.historico.length - 1].progresso = progresso;
+          player.historico[player.historico.length - 1].tempo_restante = tempo_restante;
+        } else if (progresso < 0) {
+          player.historico[player.historico.length - 1].progresso = 0;
+          player.historico[player.historico.length - 1].tempo_restante = tempo_restante;
+        } else {
+          player.historico[player.historico.length - 1].progresso = 100;
+          player.historico[player.historico.length - 1].tempo_restante = tempo_restante;
         }
-      });
-    };
+      }
+    });
+  };
 
   $timeout(updateProgressBar, 0);
   $interval(updateProgressBar, 5000);
@@ -196,6 +196,42 @@ angular.module('angularApp').controller('mainController', function ($scope, $htt
     data_nascimento.setMonth(mes - 1);
     data_nascimento.setFullYear(ano);
     return data_nascimento;
+  };
+
+  function formata_data(date) {
+    var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+  }
+
+  $scope.filtra_receita_por_data = function () {    
+    var data = get_data_selecionada();
+    $scope.model.filtro_receita = formata_data(data);       
+  };
+  
+  $scope.update_total_receita = function () {
+    $scope.model.total_receita = 0;
+    $scope.model.f_receitas.forEach(function (receita) {
+      $scope.model.total_receita += receita.valor;      
+    });
+  };
+  
+  $scope.filtra_despesa_por_data = function () {
+    var data = get_data_selecionada();
+    $scope.model.filtro_despesa = formata_data(data);
+  };
+  
+  $scope.update_total_despesa = function () {
+    $scope.model.total_despesa = 0;
+    $scope.model.f_despesas.forEach(function (despesa) {
+      $scope.model.total_despesa += despesa.valor;      
+    });
   };
 
   $scope.adicionaCadastro = function (novo_cadastro) {
@@ -503,7 +539,7 @@ angular.module('angularApp').controller('mainController', function ($scope, $htt
   };
 
   $scope.atualiza_config = function () {
-    var config_update = angular.copy($scope.model.config[0]);    
+    var config_update = angular.copy($scope.model.config[0]);
     ajaxPrecos.updateConfig(config_update, function (config_data) {
       $scope.model.config.length = 0;
       $scope.model.config = angular.fromJson(config_data);

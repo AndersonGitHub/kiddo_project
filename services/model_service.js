@@ -19,6 +19,7 @@ angular.module('angularApp').factory('modelService', function () {
   //objeto representando o modelo. O atributo 'players' será atualizado via AJAX
   return {
     app_name: 'Diversão MaisKidMais',
+    alert : 'Dicas e alertas aqui!',
     tempo_em_horas: 0,
     tempo_em_minutos: 0,
     inicio: {
@@ -37,9 +38,13 @@ angular.module('angularApp').factory('modelService', function () {
     cadastros: [],
     despesas : [],
     receitas : [],
+    f_despesas : [],
+    f_receitas : [],
     filtro: '',
     filtro_despesa : '',
     filtro_receita : '',
+    total_receita : 0,
+    total_despesa : 0,    
     ordem: '',
     resposta: '',
     checked: -1,

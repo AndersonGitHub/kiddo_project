@@ -5,24 +5,24 @@
 <head>
   <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.css" />
-  
+
   <link rel="stylesheet" href="css/kiddo-style.css" />
 
   <script src="node_modules/angular/angular.min.js"></script>
   <script src="node_modules/angular-route/angular-route.min.js"></script>
   <script src="node_modules/angular-animate/angular-animate.min.js"></script>
-  
+
   <script src="node_modules/angular-touch/angular-touch.min.js"></script>
   <script src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
-  
+
   <script src="angular_app.js"></script>
-  
+
   <!--Serviços-->
   <script src="services/ajax_cadastro_service.js"></script>
   <script src="services/ajax_config_service.js"></script>
   <script src="services/ajax_despesa_service.js"></script>
   <script src="services/ajax_receita_service.js"></script>
-  <script src="services/model_service.js"></script>
+  <script src="services/model_service.js"></script> 
   
 </head>
 
@@ -31,34 +31,37 @@
   <nav class="navbar navbar-primary">
     <div class="container">
       <div class="navbar-header">
-        <a  href="https://www.facebook.com/diversaomaikidmais/?fref=ts" target="_blank" class="navbar-brand"><i class="fa fa-facebook-official"></i> Diversão +KID+</a>        
+        <a href="https://www.facebook.com/" target="_blank" class="navbar-brand"><i class="fa fa-facebook-official fa-2x"></i></a>
+        <a href="https://www.twitter.com/" target="_blank" class="navbar-brand"><i class="fa fa-twitter fa-2x"></i></a>
+        <a href="https://www.instagram.com/" target="_blank" class="navbar-brand"><i class="fa fa-instagram fa-2x"></i></a>
+        <a href="https://www.youtube.com/" target="_blank" class="navbar-brand"><i class="fa fa-youtube fa-2x"></i></a>
       </div>
 
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#/"><i class="fa fa-gamepad"></i> Playground</a></li>        
-        <li><a href="#/form_cadastro"><i class="fa fa-user-plus"></i> Cadastro</a></li>
-        <li><a href="#/table_clientes"><i class="fa fa-users"></i> Clientes</a></li>       
-        <li><a href="#/table_historico"><i class="fa fa-history"></i> Histórico</a></li>
-        <li><a href="#/form_despesas"><i class="fa fa-usd"></i> Despesas</a></li>
-        <li><a href="#/table_relatorio"><i class="fa fa-line-chart"></i> Relatório</a></li>
-        <li><a href="#/form_precos"><i class="fa fa-money"></i> Preços</a></li>
-        
-        
-        
+        <li><a href="#/"><i class="fa fa-gamepad fa-2x"></i> Playground</a></li>
+        <li><a href="#/form_cadastro"><i class="fa fa-user-plus fa-2x"></i> Cadastro</a></li>
+        <li><a href="#/table_clientes"><i class="fa fa-users fa-2x"></i> Clientes</a></li>
+        <li><a href="#/table_historico"><i class="fa fa-history fa-2x"></i> Histórico</a></li>
+        <li><a href="#/form_despesas"><i class="fa fa-usd fa-2x"></i> Despesas</a></li>
+        <li><a href="#/table_relatorio"><i class="fa fa-line-chart fa-2x"></i> Relatório</a></li>
+        <li><a href="#/form_precos"><i class="fa fa-money fa-2x"></i> Preços</a></li>
+
+
+
       </ul>
     </div>
   </nav>
 
-  <div id="main">  
-   
+  <div id="main">
+
     <div class="page {{pageClass}}" ng-view></div>
-    
+
   </div>
-  
+
   <footer class="text-center">
-    
+
   </footer>
-  
+
 </body>
 
 </html>
